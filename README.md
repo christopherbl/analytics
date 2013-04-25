@@ -1,4 +1,5 @@
-twitter-mining
+twitter-mining: 
+Stores Twitter results in a SQL Server database for a list of search terms (any combination of hashtags, handles, keywords) Also included is a text mining process that can extract data and predict retweet likelihood by training and testing a model based on words in tweets (bag of words with TF-IDF). 
 
 This project contains two files: 
 
@@ -6,7 +7,7 @@ Twitter.py:
 Python code that uses urllib to return Twitter search results and pymssql to populate SQL Server database (db must be created first, see instructions at bottom)
 
 TwitterRTPublish:	
-RapidMiner (ver 5.3.008) process file in xml format which can be loaded into RapidMiner using File-Import Process.  As the www.rapidminer.com site states, RapidMiner is the world-leading open-source system for data mining - it allows the user to quickly try different data mining algorithms with no coding required. 
+RapidMiner (ver 5.3.008) process file in xml format which can be loaded into RapidMiner using File-Import Process.  As the www.rapidminer.com site states, RapidMiner is the world-leading open-source system for data mining - it allows the user to quickly apply different data mining algorithms against the twitter data with no coding required. 
 
 You will need the following software: 
 - Python 2.7
