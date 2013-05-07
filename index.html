@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Analytics : " />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Analytics</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/christopherbl/analytics">View on GitHub</a>
+
+          <h1 id="project_title">Analytics</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/christopherbl/analytics/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/christopherbl/analytics/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>twitter-mining: 
+Stores Twitter results in a SQL Server database for a list of search terms (any combination of hashtags, handles, keywords) Also included is a text mining process that can extract data and predict retweet likelihood by training and testing a model based on words in tweets (bag of words with TF-IDF). </p>
+
+<p>This project contains two files: </p>
+
+<p>Twitter.py:<br>
+Python code that uses urllib to return Twitter search results and pymssql to populate SQL Server database (db must be created first, see instructions at bottom)</p>
+
+<p>TwitterRTPublish:<br>
+RapidMiner (ver 5.3.008) process file in xml format which can be loaded into RapidMiner using File-Import Process.  As the <a href="http://www.rapidminer.com">www.rapidminer.com</a> site states, RapidMiner is the world-leading open-source system for data mining - it allows the user to quickly apply different data mining algorithms against the twitter data with no coding required. </p>
+
+<p>You will need the following software: </p>
+
+<ul>
+<li>Python 2.7</li>
+<li>RapidMiner 5 including Text Mining extension (Weka extension to use those data mining models, Web Mining extension if Twitter link text mining required)</li>
+<li>SQL Server (Express) </li>
+</ul><p>This project shows that one does not need much code to use Python to pull search results from Twitter and SQL Server (Express version is free) to persist the results.  RapidMiner (community edition is free) can then be used to analyze/text mine the results – this project just creates a model to predict/analyze retweet content but you may want to extract twitter http link content, via the Get Pages and Extract Content operators, and add that to the text mining for potentially better results.  You could also overlay sentiment analysis or analyze influential retweeters instead.</p>
+
+<p>The decision tree models allow for better interpretability (you can see what words influenced retweets the most) but Naive Bayes or other models may give you better prediction results.  In RapidMiner, just right click on model operator and select Replace Operator to try out other data mining algorithms.</p>
+
+<p>The Python code to populate the SQL Server database with Twitter search results is probably best run using a task scheduler as it needs to run hourly/daily if any of the search terms return many results (Twitter search only returns the last 1500 results over no more than the last week or so).  I tried both Twython and Twitter Python APIs but neither worked for searching correctly - the Twitter Python API worked until late March 2013 but then started failing whenever the rpp parameter was populated.</p>
+
+<p>Not shown in this project is the need to split the Tweets table that the Python code populates into a TweetsTraining table and a TweetsTest table; the former would train/create the model (all of the RapidMiner operators that connect up to the Validation operator) and the latter would be used to test the model with tweets it has not seen.   If dealing with tens of thousands or more tweets, you would probably want to use ETL (can leverage the logic used in the Read Database operator) within SQL Server to randomly create these two tables from the Tweets data, as the SQL query in RapidMiner would start taking a while to run.</p>
+
+<p>Before using the Read Database operator in RapidMiner, make sure you have installed the JTDS driver from <a href="http://jtds.sourceforge.net/">http://jtds.sourceforge.net/</a> and followed the directions at <a href="http://www.linglom.com/2009/03/28/enable-remote-connection-on-sql-server-2008-express/">http://www.linglom.com/2009/03/28/enable-remote-connection-on-sql-server-2008-express/</a> to set up the SQL Server Browser Service, SQL Server Network Configuration, and instance properties correctly.</p>
+
+<p>The two SQL Server tables can be created using SQL Server CREATE TABLE with following parameters (first one in each table is primary key):</p>
+
+<p>Tweets</p>
+
+<p>[tweet_id] [BIGINT] NOT NULL,
+[tweet_datetime] [datetime] NOT NULL,
+[tweet_keyword] <a href="50">VARCHAR</a> NULL,
+[tweet] <a href="200">VARCHAR</a> NOT NULL,
+[tweeter] <a href="MAX">VARCHAR</a> NULL,
+[tweeter_id] [BIGINT] NOT NULL,
+[lang] <a href="50">VARCHAR</a> NULL</p>
+
+<p>Log</p>
+
+<p>[run_id] [INT] NOT NULL,
+[run_datetime] [datetime] NOT NULL,
+[tweets_stored] [INT] NOT NULL,</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Analytics maintained by <a href="https://github.com/christopherbl">christopherbl</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
