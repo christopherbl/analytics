@@ -24,7 +24,7 @@ Not shown in this project is the need to split the Tweets table that the Python 
 
 Before using the Read Database operator in RapidMiner, make sure you have installed the JTDS driver from http://jtds.sourceforge.net/ and followed the directions at http://www.linglom.com/2009/03/28/enable-remote-connection-on-sql-server-2008-express/ to set up the SQL Server Browser Service, SQL Server Network Configuration, and instance properties correctly.
 
-The two SQL Server tables can be created using SQL Server CREATE TABLE with following parameters (first one in each table is primary key):
+The two SQL Server tables can be created using SQL Server CREATE TABLE with following parameters (first one in each table needs primary key CONSTRAINT):
 
 Tweets
 
